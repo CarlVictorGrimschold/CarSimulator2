@@ -22,7 +22,7 @@ namespace MenuExample
             while (running)
             {
                 Console.WriteLine($"{user.FirstName} {user.LastName}\r\nVälj en handling:");
-                Console.WriteLine("Välj en handling:");
+               
                 Console.WriteLine("1. Sväng Vänster");
                 Console.WriteLine("2. Sväng Höger");
                 Console.WriteLine("3. Kör framåt");
