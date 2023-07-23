@@ -6,18 +6,12 @@ using System.Threading.Tasks;
 
 namespace CarSimulator2.Services
 {
-    internal class CarService
+    public class CarService
     {
-        private int tiredness = 0;
-        private string direction = "Norrut";
-        private int maxTiredness = 5;
-        private int maxTirednessWarning = 8;
-        private int maxFuelCapacity = 100;
-        private int fuelAmount = 100; // Starta med full bränsletank
 
-        public void TurnLeft()
+
+        public string TurnLeft(string direction)
         {
-            Console.WriteLine("Du svänger vänster.");
             if (direction == "Norrut")
                 direction = "Västerut";
             else if (direction == "Västerut")
@@ -26,12 +20,13 @@ namespace CarSimulator2.Services
                 direction = "Österut";
             else if (direction == "Österut")
                 direction = "Norrut";
-            tiredness += 1; // Öka trötthet när bilen svänger
+            return direction;
+
         }
 
-        public void TurnRight()
+        public string TurnRight(string direction)
         {
-            Console.WriteLine("Du svänger höger.");
+
             if (direction == "Norrut")
                 direction = "Österut";
             else if (direction == "Österut")
@@ -40,70 +35,22 @@ namespace CarSimulator2.Services
                 direction = "Västerut";
             else if (direction == "Västerut")
                 direction = "Norrut";
-            tiredness += 1; // Öka trötthet när bilen svänger
+            return direction;
+
         }
 
-        public void MoveForward()
+        public int MoveForward(int fuelAmount)
         {
-            if (fuelAmount > 0)
-            {
-                Console.WriteLine("Du kör framåt.");
-                fuelAmount -= 10;
-                tiredness += 1; // Öka trötthet när bilen kör framåt
-            }
-            else
-            {
-                Console.WriteLine("Bensinen är slut. Behöver tankas innan den kan åka vidare.");
-            }
+            return fuelAmount -= 10;
         }
 
-        public void MoveBackward()
+        public int MoveBackward(int fuelAmount)
         {
-            if (fuelAmount > 0)
-            {
-                Console.WriteLine("Du backar.");
-                fuelAmount -= 5;
-                tiredness += 1; // Öka trötthet när bilen backar
-            }
-            else
-            {
-                Console.WriteLine("Bensinen är slut. Behöver tankas innan den kan åka vidare.");
-            }
+            return fuelAmount -= 5;
         }
 
-        public void Rest()
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Du rastar.");
-            Console.ResetColor();
-            tiredness = 0; // Återställ trötthet när bilföraren rastar
-        }
+        
 
-        public void Refuel()
-        {
-            Console.WriteLine("Du tankar bilen.");
-            fuelAmount = maxFuelCapacity; // Fyll på bränsletanken till maxkapacitet
-            tiredness += 1; // Öka trötthet när bilen tankas
-        }
-
-        public void ShowStatus()
-        {
-            Console.WriteLine("Trötthet: " + tiredness);
-            Console.WriteLine("Riktning: " + direction);
-            Console.WriteLine("Bensinmängd: " + fuelAmount);
-
-            if (tiredness >= maxTiredness && tiredness < maxTirednessWarning)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("Varning: Föraren börjar bli trött. Ta en rast snart!");
-                Console.ResetColor();
-            }
-            else if (tiredness >= maxTirednessWarning)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("VARNING: Föraren är extremt trött! Ta en rast omedelbart!");
-                Console.ResetColor();
-            }
-        }
+        
     }
 }

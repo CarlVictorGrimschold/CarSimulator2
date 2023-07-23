@@ -36,5 +36,17 @@ namespace CarSimulator2.Services
             }
             return user;    
         }
+        public int GetDriverTiredness(int tiredness)
+        {
+            return tiredness++;
+        }
+        public int Rest()
+        {
+            return 0;
+        }
+        public int Refuel()
+        {
+            return 100;
+        }
     }
 }

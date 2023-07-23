@@ -9,14 +9,14 @@ namespace MenuExample
         static async Task Main(string[] args)
         {
             bool running = true;
-            int trötthet = 0;
-            string riktning = "Norrut";
-            int maxTrötthet = 5;
-            int maxTrötthetVarning = 8;
-            int maxBensinKapacitet = 100;
-            int bensinMängd = maxBensinKapacitet; // Starta med full bensintank
+            int tiredness = 0;
+            string direction = "Norrut";
+            int maxTiredness = 5;
+            int maxTirednessWarning = 8;
+            int fuelAmount = 100; // Starta med full bensintank
             var user = new RandomUserName();
             var driverService = new DriverService();
+            var carService = new CarService();
             user = await driverService.GetRandomUserDataAsync();
 
             while (running)
@@ -37,34 +37,20 @@ namespace MenuExample
                 {
                     case "1":
                         Console.WriteLine("Du svänger vänster.");
-                        if (riktning == "Norrut")
-                            riktning = "Västerut";
-                        else if (riktning == "Västerut")
-                            riktning = "Söderut";
-                        else if (riktning == "Söderut")
-                            riktning = "Österut";
-                        else if (riktning == "Österut")
-                            riktning = "Norrut";
-                        trötthet += 1; // Öka trötthet när bilen svänger
+                        direction = carService.TurnLeft(direction);
+                        tiredness = driverService.GetDriverTiredness(tiredness); // Öka trötthet när bilen svänger
                         break;
                     case "2":
                         Console.WriteLine("Du svänger höger.");
-                        if (riktning == "Norrut")
-                            riktning = "Österut";
-                        else if (riktning == "Österut")
-                            riktning = "Söderut";
-                        else if (riktning == "Söderut")
-                            riktning = "Västerut";
-                        else if (riktning == "Västerut")
-                            riktning = "Norrut";
-                        trötthet += 1; // Öka trötthet när bilen svänger
+                        direction = carService.TurnRight(direction);
+                        tiredness = driverService.GetDriverTiredness(tiredness); // Öka trötthet när bilen svänger
                         break;
                     case "3":
-                        if (bensinMängd > 0)
+                        if (fuelAmount > 0)
                         {
                             Console.WriteLine("Du kör framåt.");
-                            bensinMängd -= 10;
-                            trötthet += 1; // Öka trötthet när bilen kör framåt
+                            fuelAmount = carService.MoveForward(fuelAmount);
+                            tiredness = driverService.GetDriverTiredness(tiredness); // Öka trötthet när bilen kör framåt
                         }
                         else
                         {
@@ -72,11 +58,11 @@ namespace MenuExample
                         }
                         break;
                     case "4":
-                        if (bensinMängd > 0)
+                        if (fuelAmount > 0)
                         {
                             Console.WriteLine("Du backar.");
-                            bensinMängd -= 5;
-                            trötthet += 1; // Öka trötthet när bilen backar
+                            fuelAmount = carService.MoveBackward(fuelAmount);
+                            tiredness = driverService.GetDriverTiredness(tiredness); // Öka trötthet när bilen backar
                         }
                         else
                         {
@@ -89,15 +75,13 @@ namespace MenuExample
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Du rastar.");
                         Console.ResetColor();
-                        trötthet = 0; // Återställ trötthet när bilföraren rastar
-                        
-                        trötthet = 0; // Återställ trötthet när bilföraren rastar
+                        tiredness = driverService.Rest(); // Återställ trötthet när bilföraren rastar
                         Console.ResetColor();
                         break;
                     case "6":
                         Console.WriteLine("Du tankar bilen.");
-                        bensinMängd = maxBensinKapacitet; // Fyll på bensintanken till maxkapacitet
-                        trötthet += 1; // Öka trötthet när bilen tankas
+                        fuelAmount = driverService.Refuel(); // Fyll på bensintanken till maxkapacitet
+                        tiredness = driverService.GetDriverTiredness(tiredness); // Öka trötthet när bilen tankas
                         break;
                     case "7":
                         running = false;
@@ -108,17 +92,17 @@ namespace MenuExample
                         break;
                 }
 
-                Console.WriteLine("Trötthet: " + trötthet);
-                Console.WriteLine("Riktning: " + riktning);
-                Console.WriteLine("Bensinmängd: " + bensinMängd);
+                Console.WriteLine("Trötthet: " + tiredness);
+                Console.WriteLine("Riktning: " + direction);
+                Console.WriteLine("Bensinmängd: " + fuelAmount);
 
-                if (trötthet >= maxTrötthet && trötthet < maxTrötthetVarning)
+                if (tiredness >= maxTiredness && tiredness < maxTirednessWarning)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Varning: Föraren börjar bli trött. Ta en rast snart!");
                     Console.ResetColor();
                 }
-                else if (trötthet >= maxTrötthetVarning)
+                else if (tiredness >= maxTirednessWarning)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("VARNING: Föraren är extremt trött! Ta en rast omedelbart!");
