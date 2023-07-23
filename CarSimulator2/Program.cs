@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CarSimulator2.Models;
+using CarSimulator2.Services;
+using System;
 
 namespace MenuExample
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             bool running = true;
             int trötthet = 0;
@@ -13,9 +15,13 @@ namespace MenuExample
             int maxTrötthetVarning = 8;
             int maxBensinKapacitet = 100;
             int bensinMängd = maxBensinKapacitet; // Starta med full bensintank
+            var user = new RandomUserName();
+            var driverService = new DriverService();
+            user = await driverService.GetRandomUserDataAsync();
 
             while (running)
             {
+                Console.WriteLine($"{user.FirstName} {user.LastName}\r\nVälj en handling:");
                 Console.WriteLine("Välj en handling:");
                 Console.WriteLine("1. Sväng Vänster");
                 Console.WriteLine("2. Sväng Höger");
