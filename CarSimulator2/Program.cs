@@ -54,7 +54,9 @@ namespace MenuExample
                         }
                         else
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("Bensinen är slut. Behöver tankas innan den kan åka vidare.");
+                            Console.ResetColor();
                         }
                         break;
                     case "4":
